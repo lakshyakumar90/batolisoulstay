@@ -1,0 +1,14 @@
+{
+  "name": "Batoli Soul Stay",
+  "short_name": "Batoli Stay",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "32x32",
+      "type": "image/svg+xml"
+    }
+  ],
+  "theme_color": "#87CEEB",
+  "background_color": "#ffffff",
+  "display": "standalone"
+}

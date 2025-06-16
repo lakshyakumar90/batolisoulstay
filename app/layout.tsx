@@ -28,6 +28,17 @@ export const metadata: Metadata = {
   keywords: 'Batoli Soul Stay, mountain retreat, peaceful accommodation, Soulstay, mountain views, nature getaway, serene stay',
   authors: [{ name: 'Batoli Soul Stay' }],
   creator: 'Batoli Soul Stay',
+  icons: {
+    icon: [
+      { url: '/favicon.svg' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+    shortcut: ['/favicon.svg'],
+    apple: [
+      { url: '/favicon.svg' },
+    ],
+  },
+  manifest: '/site.webmanifest',
   publisher: 'Batoli Soul Stay',
   robots: 'index, follow',
   openGraph: {

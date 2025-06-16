@@ -8,6 +8,17 @@ import { Button } from '@/components/ui/button';
 export function LocationSection() {
   const mapRef = useRef<HTMLDivElement>(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Mock map implementation - in a real app, you'd use Mapbox GL JS
   useEffect(() => {
@@ -20,77 +31,78 @@ export function LocationSection() {
   }, []);
 
   return (
-    <section id="location" className="relative py-20 bg-gradient-to-br from-warm-gray/30 to-white">
+    <section id="location" className="relative py-12 md:py-20 bg-gradient-to-br from-warm-gray/30 to-white overflow-hidden">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-8 md:mb-16"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-deep-blue mb-4 font-poppins">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-deep-blue mb-4 font-poppins">
             Discover Our{' '}
             <span className="text-gradient">Location</span>
           </h2>
-          <p className="text-xl text-stone-gray max-w-3xl mx-auto">
+          <p className="text-base md:text-xl text-stone-gray max-w-3xl mx-auto">
             Perfectly positioned in the heart of the mountains, with easy access to nature's most spectacular attractions and authentic local experiences.
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
+        <div className="grid lg:grid-cols-2 gap-6 md:gap-12 items-start">
           {/* Map Container */}
           <motion.div
-            className="relative"
+            className="relative w-full"
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <div className="map-container relative bg-gradient-to-br from-sky-blue/20 to-light-blue/30 rounded-2xl overflow-hidden shadow-2xl aspect-video flex items-center justify-center">
+            <div className="map-container relative bg-gradient-to-br from-sky-blue/20 to-light-blue/30 rounded-2xl overflow-hidden shadow-2xl w-full">
               {/* Embedded Google Map with Pinpoint Location */}
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2790.046110189591!2d77.9590625!3d30.4526875!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3908d30073200ae9%3A0x6dc1cf067cf83e7b!2sBatolisoulstay!5e1!3m2!1sen!2sin!4v1750061454089!5m2!1sen!2sin"
-                width="100%"
-                height="100%"
-                style={{ border: 0, minHeight: '350px' }}
-                allowFullScreen={true}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Batoli Soul Stay Location"
-              />
+              <div className="relative w-full" style={{ paddingBottom: '75%' }}>
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2790.046110189591!2d77.9590625!3d30.4526875!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3908d30073200ae9%3A0x6dc1cf067cf83e7b!2sBatolisoulstay!5e1!3m2!1sen!2sin!4v1750061454089!5m2!1sen!2sin"
+                  className="absolute top-0 left-0 w-full h-full"
+                  style={{ border: 0 }}
+                  allowFullScreen={true}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Batoli Soul Stay Location"
+                />
+              </div>
             </div>
           </motion.div>
 
           {/* Location Info Card + Getting Here */}
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-4 md:gap-6">
             {/* Location Info Card */}
             <motion.div
-              className="bg-white rounded-xl p-6 shadow-lg"
+              className="bg-white rounded-xl p-4 md:p-6 shadow-lg"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
               viewport={{ once: true }}
             >
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-sky-blue rounded-full flex items-center justify-center">
-                  <MapPin className="h-6 w-6 text-white" />
+                <div className="w-10 h-10 md:w-12 md:h-12 bg-sky-blue rounded-full flex items-center justify-center flex-shrink-0">
+                  <MapPin className="h-5 w-5 md:h-6 md:w-6 text-white" />
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
                   <h3 className="font-bold text-deep-blue mb-1">Batoli Soul Stay</h3>
                   <p className="text-stone-gray text-sm mb-3">
                     Batoli Soul Stay, Batoli Village,<br/>
                     Dehradun, Uttarakhand, India
                   </p>
-                  <div className="flex gap-2">
-                    <Button size="sm" className="bg-blue-500 hover:bg-blue-400" asChild>
+                  <div className="flex flex-wrap gap-2">
+                    <Button size={isMobile ? "sm" : "default"} className="bg-blue-500 hover:bg-blue-400 text-sm md:text-base" asChild>
                       <a href="https://maps.app.goo.gl/HQu8gsiv2xJUsYeA8?g_st=awb" target="_blank" rel="noopener noreferrer">
                         <Navigation className="h-4 w-4 mr-1" />
                         Get Directions
                       </a>
                     </Button>
-                    <Button size="sm" variant="outline" asChild>
+                    <Button size={isMobile ? "sm" : "default"} variant="outline" className="text-sm md:text-base" asChild>
                       <a href="https://maps.app.goo.gl/HQu8gsiv2xJUsYeA8?g_st=awb" target="_blank" rel="noopener noreferrer">
                         Share Location
                       </a>
@@ -102,7 +114,7 @@ export function LocationSection() {
 
             {/* Getting Here */}
             <motion.div
-              className="bg-gradient-to-r from-sky-blue/10 to-light-blue/10 rounded-xl p-6"
+              className="bg-gradient-to-r from-sky-blue/10 to-light-blue/10 rounded-xl p-4 md:p-6"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
