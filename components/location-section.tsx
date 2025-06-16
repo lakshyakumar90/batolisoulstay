@@ -9,6 +9,8 @@ export function LocationSection() {
   const mapRef = useRef<HTMLDivElement>(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [shareStatus, setShareStatus] = useState('');
+  const shareUrl = 'https://maps.app.goo.gl/HQu8gsiv2xJUsYeA8?g_st=awb';
 
   useEffect(() => {
     const checkMobile = () => {
@@ -29,6 +31,28 @@ export function LocationSection() {
 
     return () => clearTimeout(timer);
   }, []);
+
+  const handleShareLocation = async () => {
+    const shareData = {
+      title: 'Batoli Soul Stay Location',
+      text: 'Check out Batoli Soul Stay at this location!',
+      url: shareUrl,
+    };
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+        setShareStatus('Shared successfully!');
+      } else if (navigator.clipboard) {
+        await navigator.clipboard.writeText(shareUrl);
+        setShareStatus('Location copied to clipboard!');
+      } else {
+        setShareStatus('Sharing not supported on this device.');
+      }
+    } catch (error) {
+      setShareStatus('Could not share location.');
+    }
+    setTimeout(() => setShareStatus(''), 3000);
+  };
 
   return (
     <section id="location" className="relative py-12 md:py-20 bg-gradient-to-br from-warm-gray/30 to-white overflow-hidden">
@@ -102,12 +126,15 @@ export function LocationSection() {
                         Get Directions
                       </a>
                     </Button>
-                    <Button size={isMobile ? "sm" : "default"} variant="outline" className="text-sm md:text-base" asChild>
-                      <a href="https://maps.app.goo.gl/HQu8gsiv2xJUsYeA8?g_st=awb" target="_blank" rel="noopener noreferrer">
-                        Share Location
-                      </a>
+                    <Button size={isMobile ? "sm" : "default"} variant="outline" className="text-sm md:text-base" type="button" onClick={handleShareLocation}>
+                      Share Location
                     </Button>
                   </div>
+                  {shareStatus && (
+                    <div className="mt-2 text-sm text-green-600 animate-fade-in">
+                      {shareStatus}
+                    </div>
+                  )}
                 </div>
               </div>
             </motion.div>

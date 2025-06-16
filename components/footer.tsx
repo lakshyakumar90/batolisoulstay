@@ -13,7 +13,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-20 mb-12">
           {/* About Column */}
           <div className="space-y-4">
-            <h3 className="text-xl font-bold text-white mb-4">Batoli Home Stay</h3>
+            <h3 className="text-xl font-bold text-white mb-4">Batoli Soul Stay</h3>
             <p className="text-sky-100">
               Experience the perfect blend of comfort and nature at our family-run home stay in the heart of the mountains.
             </p>
