@@ -34,7 +34,7 @@ export function ContactUsSection() {
   };
 
   return (
-    <section id="contact" className="py-20 bg-gradient-to-br from-blue-50 to-blue-100">
+    <section id="contact" className="relative py-20 bg-gradient-to-br from-blue-50 to-blue-100">
       <div className="container mx-auto px-4 max-w-5xl">
         <h2 className="text-4xl font-bold text-deep-blue mb-12 text-center drop-shadow-lg">Contact Us</h2>
         <div className="flex flex-col md:flex-row gap-10 items-stretch justify-center">

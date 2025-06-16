@@ -32,3 +32,19 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Failed to send email' }, { status: 500 });
   }
 }
+
+export function GET() {
+  return NextResponse.json({ error: 'Method Not Allowed' }, { status: 405 });
+}
+
+export function PUT() {
+  return NextResponse.json({ error: 'Method Not Allowed' }, { status: 405 });
+}
+
+export function DELETE() {
+  return NextResponse.json({ error: 'Method Not Allowed' }, { status: 405 });
+}
+
+export function PATCH() {
+  return NextResponse.json({ error: 'Method Not Allowed' }, { status: 405 });
+}

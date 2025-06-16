@@ -20,7 +20,7 @@ export function LocationSection() {
   }, []);
 
   return (
-    <section id="location" className="py-20 bg-gradient-to-br from-warm-gray/30 to-white">
+    <section id="location" className="relative py-20 bg-gradient-to-br from-warm-gray/30 to-white">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <motion.div

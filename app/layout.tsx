@@ -16,38 +16,43 @@ const poppins = Poppins({
   display: 'swap',
 });
 
+// Correct Next.js 14+ viewport export
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
+
 export const metadata: Metadata = {
-  title: 'Batoli Home Stay - Serene Mountain Retreat | Peaceful Accommodation',
-  description: 'Experience tranquility at Batoli Home Stay, nestled in the mountains with breathtaking views. Book your perfect mountain getaway with modern amenities and authentic hospitality.',
-  keywords: 'Batoli Home Stay, mountain retreat, peaceful accommodation, homestay, mountain views, nature getaway, serene stay',
-  authors: [{ name: 'Batoli Home Stay' }],
-  creator: 'Batoli Home Stay',
-  publisher: 'Batoli Home Stay',
+  title: 'Batoli Soul Stay - Serene Mountain Retreat | Peaceful Accommodation',
+  description: 'Experience tranquility at Batoli Soul Stay, nestled in the mountains with breathtaking views. Book your perfect mountain getaway with modern amenities and authentic hospitality.',
+  keywords: 'Batoli Soul Stay, mountain retreat, peaceful accommodation, Soulstay, mountain views, nature getaway, serene stay',
+  authors: [{ name: 'Batoli Soul Stay' }],
+  creator: 'Batoli Soul Stay',
+  publisher: 'Batoli Soul Stay',
   robots: 'index, follow',
-  viewport: 'width=device-width, initial-scale=1',
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    title: 'Batoli Home Stay - Serene Mountain Retreat',
-    description: 'Experience tranquility at Batoli Home Stay, nestled in the mountains with breathtaking views.',
-    siteName: 'Batoli Home Stay',
+    title: 'Batoli Soul Stay - Serene Mountain Retreat',
+    description: 'Experience tranquility at Batoli Soul Stay, nestled in the mountains with breathtaking views.',
+    siteName: 'Batoli Soul Stay',
     images: [
       {
-        url: 'https://images.pexels.com/photos/1029604/pexels-photo-1029604.jpeg',
+        url: '/hero1.jpg',
         width: 1200,
         height: 630,
-        alt: 'Batoli Home Stay Mountain View',
+        alt: 'Batoli Soul Stay Mountain View',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Batoli Home Stay - Serene Mountain Retreat',
-    description: 'Experience tranquility at Batoli Home Stay, nestled in the mountains with breathtaking views.',
-    images: ['https://images.pexels.com/photos/1029604/pexels-photo-1029604.jpeg'],
+    title: 'Batoli Soul Stay - Serene Mountain Retreat',
+    description: 'Experience tranquility at Batoli Soul Stay, nestled in the mountains with breathtaking views.',
+    images: ['/hero1.jpg'],
   },
   alternates: {
-    canonical: 'https://batoli-homestay.com',
+    canonical: 'https://batolisoulstay.vercel.app',
   },
 };
 
@@ -70,9 +75,9 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "LodgingBusiness",
-              "name": "Batoli Home Stay",
+              "name": "Batoli Soul Stay",
               "description": "Serene mountain retreat offering peaceful accommodation with breathtaking views",
-              "url": "https://batoli-homestay.com",
+              "url": "https://batoli-Soulstay.com",
               "telephone": "+1-234-567-8900",
               "address": {
                 "@type": "PostalAddress",

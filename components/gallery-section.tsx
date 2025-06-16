@@ -24,72 +24,72 @@ const galleryImages: GalleryImage[] = [
   {
     id: 2,
     src: '/gallery2.jpg',
-    alt: 'Cozy interior of Batoli Home Stay',
-    category: 'interior',
-    title: 'Comfortable Living Space',
+    alt: 'Mountain view of Batoli Home Stay',
+    category: 'views',
+    title: 'Peaceful',
   },
   {
     id: 3,
     src: '/gallery3.jpg',
-    alt: 'Delicious local cuisine at Batoli',
-    category: 'food',
-    title: 'Authentic Local Cuisine',
+    alt: 'Impressive Views at Batoli',
+    category: 'Views',
+    title: 'Impressive Views',
   },
   {
     id: 6,
     src: '/gallery6.jpg',
-    alt: 'Traditional breakfast spread',
-    category: 'food',
-    title: 'Fresh Mountain Breakfast',
+    alt: 'Scenes in Winter',
+    category: 'Views',
+    title: 'Views in Winter',
   },
   {
     id: 5,
     src: '/gallery5.jpg',
-    alt: 'Comfortable bedroom at Batoli',
-    category: 'interior',
-    title: 'Peaceful Bedroom',
+    alt: 'Sunrise at Batoli',
+    category: 'Views',
+    title: 'Sunrise',
   },
   {
     id: 7,
     src: '/gallery7.jpg',
-    alt: 'Garden area with mountain backdrop',
-    category: 'views',
-    title: 'Tranquil Garden Space',
+    alt: 'Views on Cloudy day',
+    category: 'Views',
+    title: 'Views on Cloudy day',
   },
   {
     id: 8,
     src: '/gallery8.jpg',
-    alt: 'Common area for guests',
-    category: 'interior',
-    title: 'Welcoming Common Area',
+    alt: 'Views on Cloudy day',
+    category: 'Views',
+    title: 'Views on Cloudy day',
   },
   {
     id: 9,
     src: '/gallery9.jpg',
-    alt: 'Local delicacies and tea',
-    category: 'food',
-    title: 'Evening Tea & Snacks',
+    alt: 'Be comfortable',
+    category: 'Comfort',
+    title: 'Be comfortable',
   },
   {
     id: 10,
     src: '/gallery10.jpg',
-    alt: 'Local delicacies and tea',
-    category: 'food',
-    title: 'Evening Tea & Snacks',
+    alt: 'Sun on a Cloudy day',
+    category: 'Cloudy',
+    title: 'Sun on a Cloudy day',
   },
   {
     id: 11,
     src: '/gallery11.jpg',
-    alt: 'Local delicacies and tea',
-    category: 'food',
-    title: 'Evening Tea & Snacks',
+    alt: 'Heavenly Visuals',
+    category: 'Views',
+    title: 'Heavenly Visuals',
   },
   {
     id: 12,
     src: '/gallery12.jpg',
-    alt: 'Local delicacies and tea',
-    category: 'food',
-    title: 'Evening Tea & Snacks',
+    alt: 'Nature at its best',
+    category: 'Nature',
+    title: 'Nature at its best',
   },
     {
     id: 4,
@@ -105,6 +105,11 @@ export function GallerySection() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const sectionRef = useRef<HTMLDivElement>(null);
   const galleryRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const [overlaySize, setOverlaySize] = useState({ width: 0, height: 0 });
+  const [videoMuted, setVideoMuted] = useState(true);
 
   // Always show all images, no filter
   const filteredImages = galleryImages;
@@ -183,8 +188,28 @@ export function GallerySection() {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [lightboxImage, currentImageIndex]);
 
+  const updateOverlaySize = () => {
+    if (imageRef.current) {
+      setOverlaySize({
+        width: imageRef.current.clientWidth,
+        height: imageRef.current.clientHeight,
+      });
+    } else if (videoRef.current) {
+      setOverlaySize({
+        width: videoRef.current.clientWidth,
+        height: videoRef.current.clientHeight,
+      });
+    }
+  };
+  useEffect(() => {
+    setVideoMuted(true); // Always start muted when opening a video
+    updateOverlaySize();
+    window.addEventListener('resize', updateOverlaySize);
+    return () => window.removeEventListener('resize', updateOverlaySize);
+  }, [lightboxImage]);
+
   return (
-    <section id="gallery" ref={sectionRef} className="py-20 bg-white">
+    <section id="gallery" ref={sectionRef} className="relative py-20 bg-white">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <motion.div
@@ -212,7 +237,7 @@ export function GallerySection() {
           animate={controls}
           layout={false} // Disable framer-motion layout animations for performance
         >
-          <AnimatePresence mode="wait">
+          <AnimatePresence>
             {filteredImages.map((image, index) => (
               <motion.div
                 key={`${image.id}`}
@@ -300,37 +325,75 @@ export function GallerySection() {
 
             {/* Image Container */}
             <motion.div
-              className="relative max-w-4xl w-full h-[75vh] mx-4 flex items-center justify-center"
+              className="relative max-w-4xl w-full mx-4 flex items-center justify-center"
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
             >
               {lightboxImage.src.endsWith('.mp4') ? (
-                <video
-                  src={lightboxImage.src}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  className="w-auto max-w-full max-h-full object-contain rounded-lg mx-auto"
-                />
+                <div style={{ position: 'relative', display: 'inline-block' }}>
+                  <video
+                    ref={videoRef}
+                    src={lightboxImage.src}
+                    autoPlay
+                    muted={videoMuted}
+                    loop
+                    playsInline
+                    onLoadedMetadata={updateOverlaySize}
+                    className="w-auto max-w-full max-h-[80vh] object-contain rounded-lg mx-auto"
+                  />
+                  {/* Mute/Unmute Button */}
+                  <button
+                    type="button"
+                    onClick={() => setVideoMuted((m) => !m)}
+                    className="absolute top-4 left-4 z-10 w-12 h-12 bg-black/60 hover:bg-black/80 pr-1 text-white rounded-full flex items-center justify-center focus:outline-none"
+                    style={{ pointerEvents: 'auto' }}
+                    aria-label={videoMuted ? 'Unmute video' : 'Mute video'}
+                  >
+                    {videoMuted ? (
+                      // Mute icon
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" d="M9 9v6h4l5 5V4l-5 5H9z" /></svg>
+                    ) : (
+                      // Unmute icon (with a line through it)
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" d="M9 9v6h4l5 5V4l-5 5H9z" /><line x1="4" y1="4" x2="20" y2="20" stroke="currentColor" strokeWidth="2" /></svg>
+                    )}
+                  </button>
+                </div>
               ) : (
-                <img
-                  src={lightboxImage.src}
-                  alt={lightboxImage.alt}
-                  className="w-auto max-w-full max-h-full object-contain rounded-lg mx-auto"
-                />
+                <div style={{ position: 'relative', display: 'inline-block' }}>
+                  <img
+                    ref={imageRef}
+                    src={lightboxImage.src}
+                    alt={lightboxImage.alt}
+                    onLoad={updateOverlaySize}
+                    className="w-auto max-w-full max-h-[80vh] object-contain rounded-lg mx-auto"
+                  />
+                  <div
+                    ref={overlayRef}
+                    style={{
+                      position: 'absolute',
+                      left: 0,
+                      bottom: 0,
+                      width: overlaySize.width,
+                      height: overlaySize.height * 0.33, // 1/3rd of image height
+                      pointerEvents: 'none',
+                      borderBottomLeftRadius: '0.5rem',
+                      borderBottomRightRadius: '0.5rem',
+                      background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)'
+                    }}
+                  >
+                    <div className="flex flex-col justify-end h-full p-6">
+                      <h3 className="text-white text-xl font-semibold mb-2 break-words">
+                        {lightboxImage.title}
+                      </h3>
+                      <p className="text-white/80 capitalize break-words">
+                        {lightboxImage.category} • {currentImageIndex + 1} of {filteredImages.length}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               )}
-              {/* Image Info */}
-              <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/80 to-transparent p-6 rounded-b-lg flex flex-col justify-end overflow-hidden">
-                <h3 className="text-white text-xl font-semibold mb-2 break-words">
-                  {lightboxImage.title}
-                </h3>
-                <p className="text-white/80 capitalize break-words">
-                  {lightboxImage.category} • {currentImageIndex + 1} of {filteredImages.length}
-                </p>
-              </div>
             </motion.div>
           </motion.div>
         )}

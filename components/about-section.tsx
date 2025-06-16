@@ -98,7 +98,7 @@ export function AboutSection() {
   ];
 
   return (
-    <section id="about" ref={sectionRef} className="py-20 bg-gradient-to-br from-warm-gray to-white">
+    <section id="about" ref={sectionRef} className="relative py-20 bg-gradient-to-br from-warm-gray to-white">
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Image Column */}
