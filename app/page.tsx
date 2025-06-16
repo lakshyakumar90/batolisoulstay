@@ -4,11 +4,9 @@ import { useEffect, useRef } from 'react';
 import { HeroSection } from '@/components/hero-section';
 import { AboutSection } from '@/components/about-section';
 import { GallerySection } from '@/components/gallery-section';
-import { AccommodationSection } from '@/components/accommodation-section';
 import { LocationSection } from '@/components/location-section';
 import { Footer } from '@/components/footer';
 import { ContactUsSection } from '@/components/contact-us-section';
-import { Mail, Phone, MessageCircle } from 'lucide-react';
 import Lenis from 'lenis';
 
 // Custom hook to handle isomorphic layout effects
@@ -30,8 +28,7 @@ export default function Home() {
       duration: 1.2,
       // Fix: add type for t
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smooth: true,
-      smoothTouch: false,
+      smoothWheel: true,
       touchMultiplier: 2,
     });
 
